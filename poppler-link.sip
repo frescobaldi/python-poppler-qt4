@@ -1,0 +1,198 @@
+namespace Poppler {
+
+class LinkDestination {
+%TypeHeaderCode
+#include <qt4/poppler-qt4.h>
+#include <qt4/poppler-link.h>
+%End
+
+public:
+    enum Kind {
+        destXYZ = 1,
+        destFit = 2,
+        destFitH = 3,
+        destFitV = 4,
+        destFitR = 5,
+        destFitB = 6,
+        destFitBH = 7,
+        destFitBV = 8,
+    };
+    LinkDestination(const QString &description);
+    LinkDestination(const Poppler::LinkDestination &other);
+    ~LinkDestination();
+    Kind kind() const;
+    int pageNumber() const;
+    double left() const;
+    double bottom() const;
+    double right() const;
+    double top() const;
+    double zoom() const;
+    bool isChangeLeft() const;
+    bool isChangeTop() const;
+    bool isChangeZoom() const;
+    QString toString() const;
+    QString destinationName() const;
+}; // class LinkDestination
+
+
+class Link {
+%TypeHeaderCode
+#include <qt4/poppler-qt4.h>
+#include <qt4/poppler-link.h>
+%End
+
+public:
+    Link( const QRectF &linkArea );
+    enum LinkType
+    {
+        None,
+        Goto,
+        Execute,
+        Browse,
+        Action,
+        Sound,
+        Movie,
+        JavaScript,
+    };
+    virtual LinkType linkType() const;
+    virtual ~Link();
+    QRectF linkArea() const;
+
+private:
+    Link(const Poppler::Link&);
+    
+}; // class Link
+
+
+class LinkGoto : Poppler::Link {
+%TypeHeaderCode
+#include <qt4/poppler-qt4.h>
+#include <qt4/poppler-link.h>
+%End
+
+public:
+    LinkGoto( const QRectF &linkArea, QString extFileName, const Poppler::LinkDestination & destination );
+    ~LinkGoto();
+    bool isExternal() const;
+    QString fileName() const;
+    Poppler::LinkDestination destination() const;
+    LinkType linkType() const;
+
+private:
+    LinkGoto(const Poppler::LinkGoto&);
+    
+}; // class LinkGoto
+
+
+class LinkExecute : Poppler::Link {
+%TypeHeaderCode
+#include <qt4/poppler-qt4.h>
+#include <qt4/poppler-link.h>
+%End
+
+public:
+    QString fileName() const;
+    QString parameters() const;
+    LinkExecute( const QRectF &linkArea, const QString & file, const QString & params );
+    ~LinkExecute();
+    LinkType linkType() const;
+
+private:
+    LinkExecute(const Poppler::LinkExecute&);
+    
+}; // class LinkExecute
+
+
+class LinkBrowse : Poppler::Link {
+%TypeHeaderCode
+#include <qt4/poppler-qt4.h>
+#include <qt4/poppler-link.h>
+%End
+
+public:
+    QString url() const;
+    LinkBrowse( const QRectF &linkArea, const QString &url );
+    ~LinkBrowse();
+    LinkType linkType() const;
+
+private:
+    LinkBrowse(const Poppler::LinkBrowse&);
+    
+}; // class LinkBrowse
+
+
+class LinkAction : Poppler::Link {
+%TypeHeaderCode
+#include <qt4/poppler-qt4.h>
+#include <qt4/poppler-link.h>
+%End
+
+public:
+    enum ActionType {
+        PageFirst = 1,
+        PagePrev = 2,
+        PageNext = 3,
+        PageLast = 4,
+        HistoryBack = 5,
+        HistoryForward = 6,
+        Quit = 7,
+        Presentation = 8,
+        EndPresentation = 9,
+        Find = 10,
+        GoToPage = 11,
+        Close = 12,
+    };
+    ActionType actionType() const;
+    LinkAction( const QRectF &linkArea, ActionType actionType );
+    ~LinkAction();
+    LinkType linkType() const;
+
+private:
+    LinkAction(const Poppler::LinkAction&);
+    
+}; // class LinkAction
+
+
+class LinkSound : Poppler::Link {
+%TypeHeaderCode
+#include <qt4/poppler-qt4.h>
+#include <qt4/poppler-link.h>
+%End
+
+public:
+    LinkSound( const QRectF &linkArea, double volume, bool sync, bool repeat, bool mix, Poppler::SoundObject *sound );
+    virtual ~LinkSound();
+    LinkType linkType() const;
+    double volume() const;
+    bool synchronous() const;
+    bool repeat() const;
+    bool mix() const;
+    Poppler::SoundObject *sound() const;
+
+private:
+    LinkSound(const Poppler::LinkSound&);
+    
+}; // class LinkSound
+
+
+class LinkJavaScript : Poppler::Link {
+%TypeHeaderCode
+#include <qt4/poppler-qt4.h>
+#include <qt4/poppler-link.h>
+%End
+
+public:
+    LinkJavaScript( const QRectF &linkArea, const QString &js );
+    virtual ~LinkJavaScript();
+    LinkType linkType() const;
+    QString script() const;
+
+private:
+    LinkJavaScript(const Poppler::LinkJavaScript&);
+    
+}; // class LinkJavaScript
+
+
+}; // namespace Poppler
+
+/* kate: indent-width 4; space-indent on; hl c++; indent-mode cstyle; */

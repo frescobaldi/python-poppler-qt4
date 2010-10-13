@@ -1,0 +1,6 @@
+This binding aims for completeness but is not finished yet.
+
+TODO:
+- cast returned lists of objects like Document::links() to their respective types
+- create a few Pythonic convenience interfaces for e.g. iterating over fonts, etc.
+

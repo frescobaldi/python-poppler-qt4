@@ -1,0 +1,24 @@
+python-poppler-qt4
+==================
+
+
+Python bindings for libpoppler-qt4, maintained by Wilbert Berendsen,
+inspired by Rajeev J Sebastian's QtPoppler bindings.
+
+Usage:
+======
+
+import popplerqt4
+
+d = popplerqt4.Poppler.Document.load('file.pdf')
+
+
+Documentation:
+==============
+
+The Poppler Qt4 interface library
+http://people.freedesktop.org/~aacid/docs/qt4/
+
+
+Python-specific stuff to be documented here.
+
