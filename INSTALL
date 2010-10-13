@@ -1,0 +1,22 @@
+Installation:
+=============
+
+python configure.py
+make
+make install
+
+
+Dependencies:
+=============
+
+buildtime:
+- sip 4.10
+- header files for poppler-qt4
+- header and config files for PyQt4
+- Python (tested with 2.6)
+
+runtime:
+- PyQt4
+- Poppler-Qt4
+- Python (tested with 2.6)
+
