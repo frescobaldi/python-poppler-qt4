@@ -88,7 +88,7 @@ public:
     bool okToCreateFormFields() const;
     bool okToExtractForAccessibility() const;
     bool okToAssemble() const;
-    void getPdfVersion(int *major, int *minor) const;  // TODO: will this return the versions?
+    void getPdfVersion(int *major, int *minor) const;
     QList<Poppler::FontInfo> fonts() const;
     Poppler::FontIterator* newFontIterator( int startPage = 0 ) const;
     QByteArray fontData(const Poppler::FontInfo &font) const;
