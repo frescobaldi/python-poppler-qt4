@@ -8,8 +8,7 @@
  * (copied from PyKDE4, kdecore/typedefs.sip)
  */
 
-template <TYPE>
-%MappedType QSet<TYPE>
+%MappedType QSet<Poppler::Document::RenderBackend>
 {
 %TypeHeaderCode
 #include <qset.h>
@@ -23,11 +22,11 @@ template <TYPE>
         return NULL;
 
     // Set the list elements.
-    QSet<TYPE> set = *sipCpp;
+    QSet<Poppler::Document::RenderBackend> set = *sipCpp;
     int i = 0;
-    foreach (TYPE value, set)
+    foreach (Poppler::Document::RenderBackend value, set)
     {
-        PyObject *obj = sipConvertFromNewType(&value, sipType_TYPE, sipTransferObj);
+        PyObject *obj = PyInt_FromLong ((long) value);
         if (obj == NULL || PyList_SET_ITEM (l, i, obj) < 0)
         {
             Py_DECREF(l);
@@ -58,31 +57,14 @@ template <TYPE>
     {
         if (!PyList_Check(sipPy))
             return 0;
-
-        for (int i = 0; i < PyList_GET_SIZE(sipPy); ++i)
-            if (!sipCanConvertToType(PyList_GET_ITEM (sipPy, i), sipType_TYPE, SIP_NOT_NONE))
-                return 0;
     }
 
-    QSet<TYPE> *qs = new QSet<TYPE>;
+    QSet<Poppler::Document::RenderBackend> *qs = new QSet<Poppler::Document::RenderBackend>;
  
     for (int i = 0; i < PyList_GET_SIZE(sipPy); ++i)
     {
-        int state;
-
-        TYPE *t = reinterpret_cast<TYPE *>(sipConvertToType(PyList_GET_ITEM (sipPy, i), sipType_TYPE, sipTransferObj, SIP_NOT_NONE, &state, sipIsErr));
- 
-        if (*sipIsErr)
-        {
-            sipReleaseType(t, sipType_TYPE, state);
-
-            delete qs;
-            return 0;
-        }
-
-        *qs << *t;
-
-        sipReleaseType(t, sipType_TYPE, state);
+        Poppler::Document::RenderBackend t = (Poppler::Document::RenderBackend)PyInt_AS_LONG(PyList_GET_ITEM (sipPy, i));
+        *qs << t;
     }
  
     *sipCppPtr = qs;

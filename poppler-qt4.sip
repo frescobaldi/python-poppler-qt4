@@ -4,7 +4,7 @@
 %Import QtGui/QtGuimod.sip
 %Import QtXml/QtXmlmod.sip
 
-%Include conversions.sip
+%Include types.sip
 %Include poppler-link.sip
 %Include poppler-form.sip
 %Include poppler-annotation.sip
