@@ -1,9 +1,11 @@
 python-poppler-qt4
 ==================
 
+A Python binding for libpoppler-qt4 that aims for completeness and for being
+actively maintained.
 
-Python bindings for libpoppler-qt4, maintained by Wilbert Berendsen,
-inspired by Rajeev J Sebastian's QtPoppler bindings.
+Created and currently maintained by Wilbert Berendsen.
+
 
 Usage:
 ======

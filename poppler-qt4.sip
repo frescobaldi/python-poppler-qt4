@@ -4,6 +4,7 @@
 %Import QtGui/QtGuimod.sip
 %Import QtXml/QtXmlmod.sip
 
+%Include conversions.sip
 %Include poppler-link.sip
 %Include poppler-form.sip
 %Include poppler-annotation.sip
@@ -99,7 +100,7 @@ public:
     QColor paperColor() const;
     void setRenderBackend( RenderBackend backend );
     RenderBackend renderBackend() const;
-//     static QSet<RenderBackend> availableRenderBackends();
+    static QSet<Poppler::Document::RenderBackend> availableRenderBackends();
     void setRenderHint( RenderHint hint, bool on = true );
     RenderHints renderHints() const;
     Poppler::PSConverter *psConverter() const;
