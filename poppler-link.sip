@@ -61,6 +61,35 @@ public:
 private:
     Link(const Poppler::Link&);
     
+%ConvertToSubClassCode
+    switch (sipCpp->linkType()) {
+        case Poppler::Link::Goto:
+            sipType = sipType_Poppler_LinkGoto;
+            break;
+        case Poppler::Link::Execute:
+            sipType = sipType_Poppler_LinkExecute;
+            break;
+        case Poppler::Link::Browse:
+            sipType = sipType_Poppler_LinkBrowse;
+            break;
+        case Poppler::Link::Action:
+            sipType = sipType_Poppler_LinkAction;
+            break;
+        case Poppler::Link::Sound:
+            sipType = sipType_Poppler_LinkSound;
+            break;
+// (Not yet implemented upstream)
+//         case Poppler::Link::Movie:
+//             sipType = sipType_Poppler_LinkMovie;
+//             break;
+        case Poppler::Link::JavaScript:
+            sipType = sipType_Poppler_LinkJavaScript;
+            break;
+        default:
+            sipType = sipType_Poppler_Link;
+    }
+%End
+
 }; // class Link
 
 
