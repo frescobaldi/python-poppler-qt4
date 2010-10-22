@@ -1,6 +1,13 @@
 Installation:
 =============
 
+using distutils:
+
+python setup.py build
+python setup.py install
+
+(or, using plain old sip build file:)
+
 python configure.py
 make
 make install
