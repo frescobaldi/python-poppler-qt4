@@ -4,6 +4,12 @@
 %Import QtGui/QtGuimod.sip
 %Import QtXml/QtXmlmod.sip
 
+%Timeline {
+    POPPLER_V0_12_0
+    POPPLER_V0_12_1
+    POPPLER_V0_13_2
+}
+
 %Include types.sip
 %Include poppler-link.sip
 %Include poppler-form.sip
@@ -53,14 +59,16 @@ public:
     enum RenderHint {
         Antialiasing = 0x00000001,
         TextAntialiasing = 0x00000002,
+%If(POPPLER_V0_12_1 -)
         TextHinting = 0x00000004,
+%End
     };
     typedef QFlags<Poppler::Document::RenderHint> RenderHints;
     
-//    void setColorDisplayProfile(void *outputProfileA);
-//    void setColorDisplayProfileName(const QString &name);
-//    void* colorRgbProfile() const;
-//    void* colorDisplayProfile() const;
+    void setColorDisplayProfile(void *outputProfileA);
+    void setColorDisplayProfileName(const QString &name);
+    void* colorRgbProfile() const;
+    void* colorDisplayProfile() const;
     static Poppler::Document *load(const QString & filePath,
                             const QByteArray &ownerPassword=QByteArray(),
                             const QByteArray &userPassword=QByteArray());
@@ -147,6 +155,9 @@ public:
         CaseInsensitive,
     };
     bool search(const QString &text, QRectF &rect, SearchDirection direction, SearchMode caseSensitive, Rotation rotate = Rotate0) const;
+%If(POPPLER_V0_13_2 -)
+    bool search(const QString &text, double &rectLeft, double &rectTop, double &rectRight, double &rectBottom, SearchDirection direction, SearchMode caseSensitive, Rotation rotate = Rotate0) const;
+%End
     QList<Poppler::TextBox*> textList(Rotation rotate = Rotate0) const;
     QSizeF pageSizeF() const;
     QSize pageSize() const;

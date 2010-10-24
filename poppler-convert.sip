@@ -10,6 +10,7 @@ public:
     void setOutputFileName(const QString &outputFileName);
     void setOutputDevice(QIODevice *device);
     virtual bool convert() = 0;
+%If(POPPLER_V0_12_1 -)
     enum Error {
         NoError,
         FileLockedError,
@@ -17,7 +18,7 @@ public:
         NotSupportedInputFileError,
     };
     Error lastError() const;
-
+%End
 private:
     BaseConverter(const Poppler::BaseConverter&);
 }; // class BaseConverter
