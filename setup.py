@@ -31,8 +31,8 @@ import subprocess
 from distutils.core import setup, Extension
 import sipdistutils
 
-import PyQt4.pyqtconfig as pyqtconfig
-config = pyqtconfig.Configuration()
+import PyQt4.pyqtconfig
+config = PyQt4.pyqtconfig.Configuration()
 
 pyqt_sip_dir = config.pyqt_sip_dir
 pyqt_sip_flags = config.pyqt_sip_flags

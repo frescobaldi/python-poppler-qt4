@@ -1,29 +1,29 @@
 Installation:
 =============
 
-using distutils:
+
+python-poppler-qt4 installs a single Python module named 'popplerqt4'.
+
+The setup script uses distutils. Use the following commands to build and install
+the module:
 
 python setup.py build
 python setup.py install
 
-(or, using plain old sip build file:)
+To install in /usr instead of /usr/local:
 
-python configure.py
-make
-make install
+python setup.py install --prefix /usr
 
 
 Dependencies:
 =============
 
-buildtime:
-- sip 4.10
-- header files for poppler-qt4
-- header and config files for PyQt4
-- Python (tested with 2.6)
-
-runtime:
+- sip 4.9.1 or newer
+- poppler-qt4 0.12.0 or newer (poppler-qt4 is part of poppler)
+- Qt4
 - PyQt4
-- Poppler-Qt4
 - Python (tested with 2.6)
 
+To build the popplerqt4 module, header files of Qt4 and poppler-qt4 and sip
+files of PyQt4 are needed (sometimes packaged separately in corresponding -dev
+packages).
