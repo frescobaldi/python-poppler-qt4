@@ -71,12 +71,12 @@ public:
     void* colorDisplayProfile() const;
     static Poppler::Document *load(const QString & filePath,
                             const QByteArray &ownerPassword=QByteArray(),
-                            const QByteArray &userPassword=QByteArray());
+                            const QByteArray &userPassword=QByteArray()) /Factory/;
     static Poppler::Document *loadFromData(const QByteArray &fileContents,
                             const QByteArray &ownerPassword=QByteArray(),
-                            const QByteArray &userPassword=QByteArray());
-    Poppler::Page *page(int index) const;
-    Poppler::Page *page(const QString &label) const;
+                            const QByteArray &userPassword=QByteArray()) /Factory/;
+    Poppler::Page *page(int index) const /Factory/;
+    Poppler::Page *page(const QString &label) const /Factory/;
     int numPages() const;
     PageMode pageMode() const;
     PageLayout pageLayout() const;
@@ -98,12 +98,12 @@ public:
     bool okToAssemble() const;
     void getPdfVersion(int *major, int *minor) const;
     QList<Poppler::FontInfo> fonts() const;
-    Poppler::FontIterator* newFontIterator( int startPage = 0 ) const;
+    Poppler::FontIterator* newFontIterator( int startPage = 0 ) const /Factory/;
     QByteArray fontData(const Poppler::FontInfo &font) const;
     QList<Poppler::EmbeddedFile*> embeddedFiles() const;
     bool hasEmbeddedFiles() const;
     QDomDocument *toc() const;
-    Poppler::LinkDestination *linkDestination( const QString &name );
+    Poppler::LinkDestination *linkDestination( const QString &name ) /Factory/;
     void setPaperColor(const QColor &color);
     QColor paperColor() const;
     void setRenderBackend( RenderBackend backend );
@@ -111,11 +111,11 @@ public:
     static QSet<Poppler::Document::RenderBackend> availableRenderBackends();
     void setRenderHint( RenderHint hint, bool on = true );
     RenderHints renderHints() const;
-    Poppler::PSConverter *psConverter() const;
-    Poppler::PDFConverter *pdfConverter() const;
+    Poppler::PSConverter *psConverter() const /Factory/;
+    Poppler::PDFConverter *pdfConverter() const /Factory/;
     QString metadata() const;
     bool hasOptionalContent() const;
-    Poppler::OptContentModel *optionalContentModel();
+    Poppler::OptContentModel *optionalContentModel() /Factory/;
     QStringList scripts() const;
 
 private:
