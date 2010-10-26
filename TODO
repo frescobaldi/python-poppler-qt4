@@ -1,6 +1,6 @@
-This binding aims for completeness but is not finished yet.
-
 TODO:
+
+- make Poppler::HighlightAnnotation::Quad accessible
 - create a few Pythonic convenience interfaces for e.g. iterating over fonts, etc.
 
 DONE:
