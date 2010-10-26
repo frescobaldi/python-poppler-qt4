@@ -62,7 +62,7 @@ public:
         // default initializer
         Style();
     };
-//     struct Style style;
+    Style style;
 
     struct Window {
         // window state (Hidden, FixedRotation, Deny* flags allowed)
@@ -78,7 +78,7 @@ public:
         // default initializer
         Window();
     };
-//     struct Window window;
+    Window window;
 
     struct Revision {
         // child revision
@@ -90,8 +90,8 @@ public:
         Revision();
     };
 
-//     QLinkedList< Revision >& revisions();
-//     const QLinkedList< Revision >& revisions() const;
+//     QLinkedList< Poppler::Annotation::Revision >& revisions();
+//     const QLinkedList< Poppler::Annotation::Revision >& revisions() const;
     virtual SubType subType() const = 0;
     virtual void store( QDomNode & parentNode, QDomDocument & document ) const;
     virtual ~Annotation();
