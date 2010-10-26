@@ -90,15 +90,56 @@ public:
         Revision();
     };
 
-//     QLinkedList< Poppler::Annotation::Revision >& revisions();
-//     const QLinkedList< Poppler::Annotation::Revision >& revisions() const;
+//    QLinkedList< Poppler::Annotation::Revision >& revisions();
+    const QLinkedList< Poppler::Annotation::Revision >& revisions() const;
     virtual SubType subType() const = 0;
     virtual void store( QDomNode & parentNode, QDomDocument & document ) const;
     virtual ~Annotation();
 
 private:
     Annotation(const Poppler::Annotation&);
-    
+
+%ConvertToSubClassCode
+    switch (sipCpp->subType()) {
+        case Poppler::Annotation::AText:
+            sipType = sipType_Poppler_TextAnnotation;
+            break;
+        case Poppler::Annotation::ALine:
+            sipType = sipType_Poppler_LineAnnotation;
+            break;
+        case Poppler::Annotation::AGeom:
+            sipType = sipType_Poppler_GeomAnnotation;
+            break;
+        case Poppler::Annotation::AHighlight:
+            sipType = sipType_Poppler_HighlightAnnotation;
+            break;
+        case Poppler::Annotation::AStamp:
+            sipType = sipType_Poppler_StampAnnotation;
+            break;
+        case Poppler::Annotation::AInk:
+            sipType = sipType_Poppler_InkAnnotation;
+            break;
+        case Poppler::Annotation::ALink:
+            sipType = sipType_Poppler_LinkAnnotation;
+            break;
+        case Poppler::Annotation::ACaret:
+            sipType = sipType_Poppler_CaretAnnotation;
+            break;
+        case Poppler::Annotation::AFileAttachment:
+            sipType = sipType_Poppler_FileAttachmentAnnotation;
+            break;
+        case Poppler::Annotation::ASound:
+            sipType = sipType_Poppler_SoundAnnotation;
+            break;
+        case Poppler::Annotation::AMovie:
+            sipType = sipType_Poppler_MovieAnnotation;
+            break;
+        default:
+            sipType = sipType_Poppler_Annotation;
+    }
+
+%End
+
 
 }; // class Annotation
 
@@ -244,16 +285,16 @@ public:
         Underline,
         StrikeOut,
     };
-/*    struct Quad {
-        QPointF         points[4];
-        bool            capStart;
-        bool            capEnd;
-        double          feather;
-    };*/
+//     struct Quad {
+//         QPointF         points[4];
+//         bool            capStart;
+//         bool            capEnd;
+//         double          feather;
+//     };
     HighlightType highlightType() const;
     void setHighlightType( HighlightType type );
-//     QList< Quad > highlightQuads() const;
-//     void setHighlightQuads( const QList< Quad > &quads );
+//     QList< Poppler::HighlightAnnotation::Quad > highlightQuads() const;
+//     void setHighlightQuads( const QList< Poppler::HighlightAnnotation::Quad > &quads );
 
 private:
     HighlightAnnotation(const Poppler::HighlightAnnotation&);

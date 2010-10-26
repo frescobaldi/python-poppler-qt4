@@ -5,4 +5,5 @@ TODO:
 
 DONE:
 - cast returned lists of objects like Document::links() to their respective types
+- convert to and from QLinkedList
 

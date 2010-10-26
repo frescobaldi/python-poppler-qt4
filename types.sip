@@ -74,4 +74,99 @@
 };
 
 
+/**
+ * Convert QLinkedList to and from a Python list.
+ */
+
+template<TYPE>
+%MappedType QLinkedList<TYPE>
+{
+%TypeHeaderCode
+#include <qlinkedlist.h>
+%End
+
+%ConvertFromTypeCode
+    // Create the list.
+    PyObject *l;
+
+    if ((l = PyList_New(sipCpp->size())) == NULL)
+        return NULL;
+
+    // Set the list elements.
+    TYPE item;
+    QLinkedList<TYPE>::iterator i;
+    int index = 0;
+    for (i = sipCpp->begin(); i != sipCpp->end(); ++i)
+    {
+        TYPE *t = new TYPE(*i);
+        PyObject *tobj;
+
+        if ((tobj = sipConvertFromNewType(t, sipType_TYPE, sipTransferObj)) == NULL)
+        {
+            Py_DECREF(l);
+            delete t;
+
+            return NULL;
+        }
+
+        PyList_SET_ITEM(l, index, tobj);
+        ++index;
+    }
+
+    return l;
+%End
+
+%ConvertToTypeCode
+    SIP_SSIZE_T len;
+
+    // Check the type if that is all that is required.
+    if (sipIsErr == NULL)
+    {
+        if (!PySequence_Check(sipPy) || (len = PySequence_Size(sipPy)) < 0)
+            return 0;
+
+        for (SIP_SSIZE_T i = 0; i < len; ++i)
+        {
+            PyObject *itm = PySequence_ITEM(sipPy, i);
+            bool ok = (itm && sipCanConvertToType(itm, sipType_TYPE, SIP_NOT_NONE));
+
+            Py_XDECREF(itm);
+
+            if (!ok)
+                return 0;
+        }
+
+        return 1;
+    }
+
+    QLinkedList<TYPE> *qll = new QLinkedList<TYPE>;
+    len = PySequence_Size(sipPy);
+ 
+    for (SIP_SSIZE_T i = 0; i < len; ++i)
+    {
+        PyObject *itm = PySequence_ITEM(sipPy, i);
+        int state;
+        TYPE *t = reinterpret_cast<TYPE *>(sipConvertToType(itm, sipType_TYPE, sipTransferObj, SIP_NOT_NONE, &state, sipIsErr));
+
+        Py_DECREF(itm);
+ 
+        if (*sipIsErr)
+        {
+            sipReleaseType(t, sipType_TYPE, state);
+
+            delete qll;
+            return 0;
+        }
+
+        qll->append(*t);
+
+        sipReleaseType(t, sipType_TYPE, state);
+    }
+ 
+    *sipCppPtr = qll;
+ 
+    return sipGetState(sipTransferObj);
+%End
+};
+
 /* kate: indent-width 4; space-indent on; hl c++; indent-mode cstyle; */
