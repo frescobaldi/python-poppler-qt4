@@ -204,8 +204,8 @@ public:
                      Butt, ROpenArrow, RClosedArrow, Slash };
     enum LineIntent { Unknown, Arrow, Dimension, PolygonCloud };
 
-//     QLinkedList<QPointF> linePoints() const;
-//     void setLinePoints( const QLinkedList<QPointF> &points );
+    QLinkedList<QPointF> linePoints() const;
+    void setLinePoints( const QLinkedList<QPointF> &points );
 
     TermStyle lineStartStyle() const;
     void setLineStartStyle( TermStyle style );
