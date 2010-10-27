@@ -1,6 +1,6 @@
 TODO:
 
-- make Poppler::HighlightAnnotation::Quad accessible
+- fix Poppler::HighlightAnnotation::Quad.points, causes runtime errors
 - create a few Pythonic convenience interfaces for e.g. iterating over fonts, etc.
 
 DONE:

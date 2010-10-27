@@ -285,16 +285,62 @@ public:
         Underline,
         StrikeOut,
     };
-//     struct Quad {
-//         QPointF         points[4];
-//         bool            capStart;
-//         bool            capEnd;
-//         double          feather;
-//     };
+    struct Quad {
+        QPointF *    points;
+%GetCode
+    sipPy = PyList_New(4);
+    if (sipPy == NULL)
+        return NULL;
+    
+    PyObject* obj;
+    for (SIP_SSIZE_T i = 0; i < 4; ++i)
+    {
+        obj = sipConvertFromNewType(&sipCpp->points[i], sipType_QPointF, NULL);
+        PyList_SET_ITEM(sipPy, i, obj);
+    }
+%End
+%SetCode
+    SIP_SSIZE_T len;
+    if (!PySequence_Check(sipPy) || (len = PySequence_Size(sipPy)) != 4)
+        sipErr = 1;
+    else
+    {
+        for (SIP_SSIZE_T i = 0; i < 4; ++i)
+        {
+            PyObject *itm = PySequence_ITEM(sipPy, i);
+            bool ok = (itm && sipCanConvertToType(itm, sipType_QPointF, SIP_NOT_NONE));
+            Py_XDECREF(itm);
+
+            if (!ok)
+            {
+                sipErr = 1;
+                break;
+            }
+        }
+    }
+    
+    if (sipErr == 1)
+        PyErr_SetString(PyExc_ValueError, "Quad.points must be a sequence of exactly 4 QPointF instances");
+    else
+    {
+        int iserr;
+        for (SIP_SSIZE_T i = 0; i < 4; ++i)
+        {
+            PyObject *itm = PySequence_ITEM(sipPy, i);
+            QPointF *point = (QPointF *)sipConvertToType(itm, sipType_QPointF, 0, 0, 0, &iserr);
+            Py_DECREF(itm);
+            sipCpp->points[i] = *point;
+        }
+    }
+%End
+        bool            capStart;
+        bool            capEnd;
+        double          feather;
+    };
     HighlightType highlightType() const;
     void setHighlightType( HighlightType type );
-//     QList< Poppler::HighlightAnnotation::Quad > highlightQuads() const;
-//     void setHighlightQuads( const QList< Poppler::HighlightAnnotation::Quad > &quads );
+    QList< Poppler::HighlightAnnotation::Quad > highlightQuads() const;
+    void setHighlightQuads( const QList< Poppler::HighlightAnnotation::Quad > &quads );
 
 private:
     HighlightAnnotation(const Poppler::HighlightAnnotation&);

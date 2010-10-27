@@ -4,8 +4,8 @@
 
 
 /**
- * Convert QSet to and from a Python list.
- * (copied from PyKDE4, kdecore/typedefs.sip)
+ * Convert QSet<Poppler::Document::RenderBackend>
+ * from any Python sequence and to a Python list.
  */
 
 %MappedType QSet<Poppler::Document::RenderBackend>
@@ -48,22 +48,16 @@
     // Check the type if that is all that is required.
     if (sipIsErr == NULL)
     {
-        if (!PyList_Check(sipPy))
+        if (!PySequence_Check(sipPy))
             return 0;
-    }
-
-    // Check the type if that is all that is required.
-    if (sipIsErr == NULL)
-    {
-        if (!PyList_Check(sipPy))
-            return 0;
+        return 1;
     }
 
     QSet<Poppler::Document::RenderBackend> *qs = new QSet<Poppler::Document::RenderBackend>;
  
-    for (int i = 0; i < PyList_GET_SIZE(sipPy); ++i)
+    for (int i = 0; i < PySequence_Size(sipPy); ++i)
     {
-        Poppler::Document::RenderBackend t = (Poppler::Document::RenderBackend)PyInt_AS_LONG(PyList_GET_ITEM (sipPy, i));
+        Poppler::Document::RenderBackend t = (Poppler::Document::RenderBackend)PyInt_AS_LONG(PySequence_ITEM (sipPy, i));
         *qs << t;
     }
  
@@ -75,7 +69,7 @@
 
 
 /**
- * Convert QLinkedList to and from a Python list.
+ * Convert QLinkedList<TYPE> from any sequence and to a Python list.
  */
 
 template<TYPE>
