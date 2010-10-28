@@ -375,9 +375,8 @@ public:
     virtual ~InkAnnotation();
     virtual void store( QDomNode &parentNode, QDomDocument &document ) const;
     virtual SubType subType() const;
-
-//     QList< QLinkedList<QPointF> > inkPaths() const;
-//     void setInkPaths( const QList< QLinkedList<QPointF> > &paths );
+    QList< QLinkedList<QPointF> > inkPaths() const;
+    void setInkPaths( const QList< QLinkedList<QPointF> > &paths );
 
 private:
     InkAnnotation(const Poppler::InkAnnotation&);

@@ -1,10 +1,10 @@
 TODO:
 
-- support Poppler::InkAnnotation::inkPaths() and setInkPaths()
 - create a few Pythonic convenience interfaces for e.g. iterating over fonts, etc.
 
 DONE:
 - Poppler::HighlightAnnotation::Quad.points has been fixed
+- support Poppler::InkAnnotation::inkPaths() and setInkPaths()
 - cast returned lists of objects like Document::links() to their respective types
 - convert to and from QLinkedList
 

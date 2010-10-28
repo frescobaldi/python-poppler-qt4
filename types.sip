@@ -163,4 +163,87 @@ template<TYPE>
 %End
 };
 
+/**
+ * Convert QList<QLinkedList<TYPE>>
+ */
+
+template <TYPE>
+%MappedType QList< QLinkedList<TYPE> >
+{
+%TypeHeaderCode
+#include <qlist.h>
+#include <qlinkedlist.h>
+%End
+
+%ConvertFromTypeCode
+  // Create the list.
+  PyObject *l;
+
+  if ((l = PyList_New(sipCpp->size())) == NULL)
+    return NULL;
+
+  const sipMappedType* qlinkedlist_type = sipFindMappedType("QLinkedList<TYPE>");
+
+  // Set the list elements.
+  for (int i = 0; i < sipCpp->size(); ++i)
+  {
+    QLinkedList<TYPE>* t = new QLinkedList<TYPE>(sipCpp->at(i));
+    PyObject *tobj;
+
+    if ((tobj = sipConvertFromMappedType(t, qlinkedlist_type, sipTransferObj)) == NULL)
+    {
+      Py_DECREF(l);
+      delete t;
+      return NULL;
+    }
+    PyList_SET_ITEM(l, i, tobj);
+  }
+
+  return l;
+%End
+
+%ConvertToTypeCode
+  const sipMappedType* qlinkedlist_type = sipFindMappedType("QLinkedList<TYPE>");
+
+  // Check the type if that is all that is required.
+  if (sipIsErr == NULL)
+  {
+    if (!PyList_Check(sipPy))
+      return 0;
+
+    for (int i = 0; i < PyList_GET_SIZE(sipPy); ++i)
+      if (!sipCanConvertToMappedType(PyList_GET_ITEM(sipPy, i), qlinkedlist_type, SIP_NOT_NONE))
+        return 0;
+
+    return 1;
+  }
+
+
+  QList< QLinkedList<TYPE> > *ql = new QList< QLinkedList<TYPE> >;
+
+  for (int i = 0; i < PyList_GET_SIZE(sipPy); ++i)
+  {
+    int state;
+    //TYPE *t = reinterpret_cast<TYPE *>(sipConvertToInstance(PyList_GET_ITEM(sipPy, i), sipClass_TYPE, sipTransferObj, SIP_NOT_NONE, &state, sipIsErr));
+    QLinkedList<TYPE> * t = reinterpret_cast< QLinkedList<TYPE> * >(sipConvertToMappedType(PyList_GET_ITEM(sipPy, i), qlinkedlist_type, sipTransferObj, SIP_NOT_NONE, &state, sipIsErr));
+
+    if (*sipIsErr)
+    {
+      sipReleaseInstance(t, sipClass_TYPE, state);
+      delete ql;
+      return 0;
+    }
+    ql->append(*t);
+    sipReleaseInstance(t, sipClass_TYPE, state);
+  }
+
+  *sipCppPtr = ql;
+  return sipGetState(sipTransferObj);
+%End
+
+};
+
+
+
+
 /* kate: indent-width 4; space-indent on; hl c++; indent-mode cstyle; */
