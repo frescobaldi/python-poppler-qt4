@@ -289,13 +289,11 @@ public:
         QPointF *    points;
 %GetCode
     sipPy = PyList_New(4);
-    if (sipPy == NULL)
-        return NULL;
-    
     PyObject* obj;
     for (SIP_SSIZE_T i = 0; i < 4; ++i)
     {
-        obj = sipConvertFromNewType(&sipCpp->points[i], sipType_QPointF, NULL);
+        QPointF *point = new QPointF(sipCpp->points[i]);
+        obj = sipConvertFromNewType(point, sipType_QPointF, NULL);
         PyList_SET_ITEM(sipPy, i, obj);
     }
 %End
@@ -320,16 +318,16 @@ public:
     }
     
     if (sipErr == 1)
-        PyErr_SetString(PyExc_ValueError, "Quad.points must be a sequence of exactly 4 QPointF instances");
+        PyErr_SetString(PyExc_ValueError, "Quad.points must be a sequence of exactly 4 QPointF() instances");
     else
     {
-        int iserr;
+        int iserr = 0;
         for (SIP_SSIZE_T i = 0; i < 4; ++i)
         {
             PyObject *itm = PySequence_ITEM(sipPy, i);
-            QPointF *point = (QPointF *)sipConvertToType(itm, sipType_QPointF, 0, 0, 0, &iserr);
-            Py_DECREF(itm);
+            QPointF *point = reinterpret_cast<QPointF *>(sipConvertToType(itm, sipType_QPointF, 0, 0, 0, &iserr));
             sipCpp->points[i] = *point;
+            Py_DECREF(itm);
         }
     }
 %End
