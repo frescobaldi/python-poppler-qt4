@@ -1,9 +1,9 @@
-Version 0.1.1 -- 
+Version 0.1.1 -- October 28th, 2010
 
 * Add distutils-based setup.py script
 * Remove configure.py script
 * Support older poppler-qt4 versions by disabling methods not present
 
-Version 0.1.0 -- October 14, 2010
+Version 0.1.0 -- October 14th, 2010
 
 * Initial release
