@@ -1,3 +1,7 @@
+Version 0.1.2 --
+
+* Poppler::FontIterator() is now also a Python iterable
+
 Version 0.1.1 -- October 28th, 2010
 
 * poppler-qt4 API coverage complete

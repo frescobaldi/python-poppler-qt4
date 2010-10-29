@@ -208,11 +208,11 @@ template <TYPE>
   // Check the type if that is all that is required.
   if (sipIsErr == NULL)
   {
-    if (!PyList_Check(sipPy))
+    if (!PySequence_Check(sipPy))
       return 0;
 
-    for (int i = 0; i < PyList_GET_SIZE(sipPy); ++i)
-      if (!sipCanConvertToMappedType(PyList_GET_ITEM(sipPy, i), qlinkedlist_type, SIP_NOT_NONE))
+    for (int i = 0; i < PySequence_Size(sipPy); ++i)
+      if (!sipCanConvertToMappedType(PySequence_ITEM(sipPy, i), qlinkedlist_type, SIP_NOT_NONE))
         return 0;
 
     return 1;
@@ -221,11 +221,10 @@ template <TYPE>
 
   QList< QLinkedList<TYPE> > *ql = new QList< QLinkedList<TYPE> >;
 
-  for (int i = 0; i < PyList_GET_SIZE(sipPy); ++i)
+  for (int i = 0; i < PySequence_Size(sipPy); ++i)
   {
     int state;
-    //TYPE *t = reinterpret_cast<TYPE *>(sipConvertToInstance(PyList_GET_ITEM(sipPy, i), sipClass_TYPE, sipTransferObj, SIP_NOT_NONE, &state, sipIsErr));
-    QLinkedList<TYPE> * t = reinterpret_cast< QLinkedList<TYPE> * >(sipConvertToMappedType(PyList_GET_ITEM(sipPy, i), qlinkedlist_type, sipTransferObj, SIP_NOT_NONE, &state, sipIsErr));
+    QLinkedList<TYPE> * t = reinterpret_cast< QLinkedList<TYPE> * >(sipConvertToMappedType(PySequence_ITEM(sipPy, i), qlinkedlist_type, sipTransferObj, SIP_NOT_NONE, &state, sipIsErr));
 
     if (*sipIsErr)
     {

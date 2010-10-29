@@ -4,7 +4,7 @@ python-poppler-qt4
 A Python binding for libpoppler-qt4 that aims for completeness and for being
 actively maintained.
 
-Created and currently maintained by Wilbert Berendsen.
+Created and currently maintained by Wilbert Berendsen <wbsoft@xs4all.nl>.
 
 
 Usage:
@@ -18,9 +18,30 @@ d = popplerqt4.Poppler.Document.load('file.pdf')
 Documentation:
 ==============
 
-The Poppler Qt4 interface library
-http://people.freedesktop.org/~aacid/docs/qt4/
+The Python API closely follows the Poppler Qt4 C++ interface library API,
+documented at http://people.freedesktop.org/~aacid/docs/qt4/ .
 
+Whereever the C++ API requires QList, QSet or QLinkedList, any Python sequence
+can be used.  API calls that return QList, QSet or QLinkedList all return Python
+lists.
 
-Python-specific stuff to be documented here.
+There are a few differences:
+
+Poppler::Document::getPdfVersion(int *major, int *minor) can simply be called as
+d.getPdfVersion() [where d is a Poppler::Document instance]; it will return
+a tuple of two integers (major, minor).
+
+Poppler::FontIterator (returned by Poppler::Document::newFontIterator) is also
+a Python iterable (e.g. has __iter__() and __next__() methods). So although you
+can use:
+
+    it = document.newFontIterator()
+    while it.hasNext():
+        fonts = it.next()  # list of FontInfo objects
+        ...
+
+you can also use the more Pythonic:
+
+    for fonts in document.newFontIterator():
+        ...
 
