@@ -248,6 +248,18 @@ public:
     bool hasNext() const;
     int currentPage() const;
 
+    Poppler::FontIterator * __iter__();
+%MethodCode
+    sipRes = sipCpp;
+%End
+    SIP_PYOBJECT __next__();
+%MethodCode
+    if (sipCpp->hasNext())
+        sipRes = sipConvertFromType(&sipCpp->next(), sipFindType("QList<Poppler::FontInfo>"), Py_None);
+    else
+        PyErr_SetNone(PyExc_StopIteration);
+%End
+
 private:
     FontIterator(const Poppler::FontIterator&);
 //     FontIterator( int, DocumentData *dd );

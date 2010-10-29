@@ -1,8 +1,10 @@
 TODO:
 
-- create a few Pythonic convenience interfaces for e.g. iterating over fonts, etc.
+- test Python versions other than 2.6
+- add some examples
 
 DONE:
+- Poppler::Document::newFontIterator() is usable as Python iterable
 - Poppler::HighlightAnnotation::Quad.points has been fixed
 - support Poppler::InkAnnotation::inkPaths() and setInkPaths()
 - cast returned lists of objects like Document::links() to their respective types
