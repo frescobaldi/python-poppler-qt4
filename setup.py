@@ -102,12 +102,14 @@ class build_ext(sipdistutils.build_ext):
         # Default to most recent version supported by our binding.
         # See the defined tags in %Timeline{} in poppler-qt4.sip.
         ver = pkg_config_version('poppler-qt4')
-        if not ver or ver >= (0, 13, 2):
-            tag = 'POPPLER_V0_13_2'
-        elif ver >= (0, 12, 1):
-            tag = 'POPPLER_V0_12_1'
-        else:
+        if not ver or ver < (0, 12, 1):
             tag = 'POPPLER_V0_12_0'
+        elif ver < (0, 14, 0):
+            tag = 'POPPLER_V0_12_1'
+        elif ver < (0, 16, 0):
+            tag = 'POPPLER_V0_14_0'
+        else:
+            tag = 'POPPLER_V0_16_0'
         
         cmd = [sip_bin]
         if hasattr(self, 'sip_opts'):
