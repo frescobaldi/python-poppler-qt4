@@ -2,7 +2,7 @@
 
 project = dict(
     name = 'python-poppler-qt4',
-    version = '0.1.1',
+    version = '0.16.0',
     description = 'A Python binding to Poppler-Qt4',
     long_description = \
         'A Python binding to Poppler-Qt4 that aims for ' \
@@ -99,7 +99,6 @@ class build_ext(sipdistutils.build_ext):
     def _sip_compile(self, sip_bin, source, sbf):
         
         # Disable features if older poppler-qt4 version is found.
-        # Default to most recent version supported by our binding.
         # See the defined tags in %Timeline{} in poppler-qt4.sip.
         ver = pkg_config_version('poppler-qt4')
         if not ver or ver < (0, 12, 1):
