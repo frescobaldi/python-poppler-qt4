@@ -72,10 +72,10 @@ public:
     void* colorDisplayProfile() const;
     static Poppler::Document *load(const QString & filePath,
                             const QByteArray &ownerPassword=QByteArray(),
-                            const QByteArray &userPassword=QByteArray()) /Factory/;
+                            const QByteArray &userPassword=QByteArray()) /Factory, ReleaseGIL/;
     static Poppler::Document *loadFromData(const QByteArray &fileContents,
                             const QByteArray &ownerPassword=QByteArray(),
-                            const QByteArray &userPassword=QByteArray()) /Factory/;
+                            const QByteArray &userPassword=QByteArray()) /Factory, ReleaseGIL/;
     Poppler::Page *page(int index) const /Factory/;
     Poppler::Page *page(const QString &label) const /Factory/;
     int numPages() const;
@@ -101,13 +101,13 @@ public:
     bool getPdfId(QByteArray *permanentId, QByteArray *updateId) const;
 %End
     void getPdfVersion(int *major, int *minor) const;
-    QList<Poppler::FontInfo> fonts() const;
+    QList<Poppler::FontInfo> fonts() const /ReleaseGIL/;
     Poppler::FontIterator* newFontIterator( int startPage = 0 ) const /Factory/;
     QByteArray fontData(const Poppler::FontInfo &font) const;
     QList<Poppler::EmbeddedFile*> embeddedFiles() const;
     bool hasEmbeddedFiles() const;
     QDomDocument *toc() const;
-    Poppler::LinkDestination *linkDestination( const QString &name ) /Factory/;
+    Poppler::LinkDestination *linkDestination( const QString &name ) /Factory, ReleaseGIL/;
     void setPaperColor(const QColor &color);
     QColor paperColor() const;
     void setRenderBackend( RenderBackend backend );
@@ -155,10 +155,10 @@ public:
     };
     typedef QFlags<Poppler::Page::PainterFlag> PainterFlags;
 %End
-    QImage renderToImage(double xres=72.0, double yres=72.0, int x=-1, int y=-1, int w=-1, int h=-1, Rotation rotate = Rotate0) const;
+    QImage renderToImage(double xres=72.0, double yres=72.0, int x=-1, int y=-1, int w=-1, int h=-1, Rotation rotate = Rotate0) const /ReleaseGIL/;
 %If(POPPLER_V0_16_0 -)
     bool renderToPainter(QPainter* painter, double xres=72.0, double yres=72.0, int x=-1, int y=-1, int w=-1, int h=-1,
-                         Rotation rotate = Rotate0, PainterFlags flags = 0) const;
+                         Rotation rotate = Rotate0, PainterFlags flags = 0) const /ReleaseGIL/;
 %End
     QImage thumbnail() const;
 %If(POPPLER_V0_16_0 -)
@@ -174,9 +174,9 @@ public:
         CaseSensitive,
         CaseInsensitive,
     };
-    bool search(const QString &text, QRectF &rect, SearchDirection direction, SearchMode caseSensitive, Rotation rotate = Rotate0) const;
+    bool search(const QString &text, QRectF &rect, SearchDirection direction, SearchMode caseSensitive, Rotation rotate = Rotate0) const /ReleaseGIL/;
 %If(POPPLER_V0_14_0 -)
-    bool search(const QString &text, double &rectLeft, double &rectTop, double &rectRight, double &rectBottom, SearchDirection direction, SearchMode caseSensitive, Rotation rotate = Rotate0) const;
+    bool search(const QString &text, double &rectLeft, double &rectTop, double &rectRight, double &rectBottom, SearchDirection direction, SearchMode caseSensitive, Rotation rotate = Rotate0) const /ReleaseGIL/;
 %End
     QList<Poppler::TextBox*> textList(Rotation rotate = Rotate0) const;
     QSizeF pageSizeF() const;
