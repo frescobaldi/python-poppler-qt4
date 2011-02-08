@@ -1,3 +1,3 @@
-include README INSTALL LICENSE TODO
+include README INSTALL LICENSE TODO ChangeLog MANIFEST.in
 include *.py
 include *.sip
