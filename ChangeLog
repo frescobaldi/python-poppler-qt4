@@ -1,5 +1,8 @@
-Version 0.1.2 --
+Version 0.16.0 --
 
+* API updated for Poppler-0.16.0
+* Version numbering on par with Poppler
+* Release the GIL on time-consuming calls
 * Poppler::FontIterator() is now also a Python iterable
 
 Version 0.1.1 -- October 28th, 2010
