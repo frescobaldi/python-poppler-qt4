@@ -85,7 +85,6 @@ ext_args = {
         os.path.join(qt_inc_dir, 'QtCore'),
         os.path.join(qt_inc_dir, 'QtGui'),
         os.path.join(qt_inc_dir, 'QtXml'),
-        '/usr/include/poppler',
     ],
 }
 
@@ -93,7 +92,6 @@ pkg_config('poppler-qt4', ext_args)
 
 if 'libraries' not in ext_args:
     ext_args['libraries'] = ['poppler-qt4']
-
 
 # hack to provide our options to sip on its invocation:
 class build_ext(sipdistutils.build_ext):

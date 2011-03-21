@@ -7,12 +7,29 @@ python-poppler-qt4 installs a single Python module named 'popplerqt4'.
 The setup script uses distutils. Use the following commands to build and install
 the module:
 
-python setup.py build
+python setup.py build_ext
 python setup.py install
 
 To install in /usr instead of /usr/local:
 
 python setup.py install --prefix /usr
+
+
+Troubleshooting:
+================
+
+The setup script uses pkg-config to determine the version of the installed
+poppler-qt4 library. Methods or classes that are not in the installed poppler-
+qt4 library will then also be disabled in the Python binding.
+
+You can use the --include-dirs option to the build_ext command if the correct
+poppler-qt4 header files can't be found.
+
+See the output of
+
+python setup.py --help build_ext
+
+for more options.
 
 
 Dependencies:
