@@ -94,12 +94,31 @@ if 'libraries' not in ext_args:
     ext_args['libraries'] = ['poppler-qt4']
 
 # hack to provide our options to sip on its invocation:
-class build_ext(sipdistutils.build_ext):
+build_ext_base = sipdistutils.build_ext
+class build_ext(build_ext_base):
+    
+    description = "Builds the popplerqt4 module."
+    
+    user_options = build_ext_base.user_options + [
+        ('poppler-version=', None, "version of the poppler library"),
+    ]
+    
+    def initialize_options (self):
+        build_ext_base.initialize_options(self)
+        self.poppler_version = None
+
+    def finalize_options (self):
+        build_ext_base.finalize_options(self)
+        if self.poppler_version is not None:
+            self.poppler_version = tuple(map(int, re.findall(r'\d+', self.poppler_version)))
+
     def _sip_compile(self, sip_bin, source, sbf):
         
         # Disable features if older poppler-qt4 version is found.
         # See the defined tags in %Timeline{} in poppler-qt4.sip.
-        ver = pkg_config_version('poppler-qt4')
+        
+        # First check manually specified poppler version
+        ver = self.poppler_version or pkg_config_version('poppler-qt4')
         if not ver or ver < (0, 12, 1):
             tag = 'POPPLER_V0_12_0'
         elif ver < (0, 14, 0):
