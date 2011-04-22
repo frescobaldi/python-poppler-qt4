@@ -274,10 +274,12 @@ public:
 %End
     SIP_PYOBJECT __next__();
 %MethodCode
-    if (sipCpp->hasNext())
-        sipRes = sipConvertFromType(&sipCpp->next(), sipFindType("QList<Poppler::FontInfo>"), Py_None);
-    else
+    if (sipCpp->hasNext()) {
+        QList<Poppler::FontInfo> next = sipCpp->next();
+        sipRes = sipConvertFromType(&next, sipFindType("QList<Poppler::FontInfo>"), Py_None);
+    } else {
         PyErr_SetNone(PyExc_StopIteration);
+    }
 %End
 
 private:
