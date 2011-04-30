@@ -1,3 +1,7 @@
+Version 0.16.2 --
+
+* Fix gcc-4.6 compile (issue #4)
+
 Version 0.16.1 -- March 21th, 2011
 
 * Installation: fix 'sys not defined' error (issue #3)
