@@ -1,4 +1,4 @@
-Version 0.16.2 --
+Version 0.16.2 -- May 20th, 2011
 
 * Fix gcc-4.6 compile (issue #4)
 
