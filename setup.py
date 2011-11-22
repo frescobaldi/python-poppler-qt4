@@ -21,6 +21,7 @@ project = dict(
         'Programming Language :: Python',
         'Topic :: Multimedia :: Graphics :: Viewers',
     ],
+   cmdclass={}
 )
 
 import os
@@ -28,8 +29,13 @@ import re
 import shlex
 import subprocess
 import sys
+import platform
 
-from distutils.core import setup, Extension
+try:
+   from setuptools import setup, Extension
+except ImportError:
+   from distutils.core import setup, Extension
+   
 import sipdistutils
 
 import PyQt4.pyqtconfig
@@ -143,9 +149,72 @@ class build_ext(build_ext_base):
         cmd.append(source)
         self.spawn(cmd)
 
-
+if platform.system() == 'Windows':
+   # Enforce libraries to link against on Windows
+   ext_args['libraries'] = ['poppler-qt4', 'QtCore4', 'QtGui4', 'QtXml4']
+   
+   class bdist_support():
+       def __find_poppler_dll(self):
+           paths = os.environ['PATH'].split(";")
+           poppler_dll = None
+           
+           for path in paths:
+               dll_path_candidate = os.path.join(path, "poppler-qt4.dll")
+               if os.path.exists(dll_path_candidate):
+                   return dll_path_candidate
+           
+           return None
+       
+       def _copy_poppler_dll(self):
+           poppler_dll = self.__find_poppler_dll()
+           if poppler_dll is None:
+               self.warn("Could not find poppler-qt4.dll in any of the folders listed in the PATH environment variable.")
+               return False
+               
+           self.mkpath(self.bdist_dir)
+           self.copy_file(poppler_dll, os.path.join(self.bdist_dir, "python-poppler4.dll"))
+           
+           return True
+   
+   import distutils.command.bdist_msi
+   class bdist_msi(distutils.command.bdist_msi.bdist_msi, bdist_support):
+       def run(self):
+           if not self._copy_poppler_dll():
+               return
+           distutils.command.bdist_msi.bdist_msi.run(self)
+   
+   project['cmdclass']['bdist_msi'] = bdist_msi
+   
+   import distutils.command.bdist_wininst
+   class bdist_wininst(distutils.command.bdist_wininst.bdist_wininst, bdist_support):
+       def run(self):
+           if not self._copy_poppler_dll():
+               return
+           distutils.command.bdist_wininst.bdist_wininst.run(self)
+   project['cmdclass']['bdist_wininst'] = bdist_wininst
+   
+   import distutils.command.bdist_dumb
+   class bdist_dumb(distutils.command.bdist_dumb.bdist_dumb, bdist_support):
+       def run(self):
+           if not self._copy_poppler_dll():
+               return
+           distutils.command.bdist_dumb.bdist_dumb.run(self)
+   project['cmdclass']['bdist_dumb'] = bdist_dumb
+   
+   try:
+       # Attempt to patch bdist_egg if the setuptools/distribute extension is installed
+       import setuptools.command.bdist_egg
+       class bdist_egg(setuptools.command.bdist_egg.bdist_egg, bdist_support):
+           def run(self):
+               if not self._copy_poppler_dll():
+                   return
+               setuptools.command.bdist_egg.bdist_egg.run(self)
+       project['cmdclass']['bdist_egg'] = bdist_egg
+   except ImportError:
+       pass
+   
+project['cmdclass']['build_ext'] = build_ext
 setup(
-    cmdclass = {'build_ext': build_ext},
     ext_modules = [Extension("popplerqt4", ["poppler-qt4.sip"], **ext_args)],
     **project
 )
