@@ -40,6 +40,13 @@ python setup.py --help build_ext
 
 for more options.
 
+If you have a Debian-based system such as Ubuntu, and you get the error
+message "ImportError: No module named popplerqt4", try:
+
+python setup.py install --install-layout=deb
+
+See the distutils documentation for more install options.
+
 
 Dependencies:
 =============
