@@ -26,7 +26,7 @@
     int i = 0;
     foreach (Poppler::Document::RenderBackend value, set)
     {
-        PyObject *obj = PyInt_FromLong ((long) value);
+        PyObject *obj = PyLong_FromLong ((long) value);
         if (obj == NULL || PyList_SET_ITEM (l, i, obj) < 0)
         {
             Py_DECREF(l);
@@ -57,7 +57,7 @@
  
     for (int i = 0; i < PySequence_Size(sipPy); ++i)
     {
-        Poppler::Document::RenderBackend t = (Poppler::Document::RenderBackend)PyInt_AS_LONG(PySequence_ITEM (sipPy, i));
+        Poppler::Document::RenderBackend t = (Poppler::Document::RenderBackend)PyLong_AsLong(PySequence_ITEM (sipPy, i));
         *qs << t;
     }
  
