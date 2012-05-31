@@ -9,6 +9,8 @@
     POPPLER_V0_12_1
     POPPLER_V0_14_0
     POPPLER_V0_16_0
+    POPPLER_V0_18_0
+    POPPLER_V0_20_0
 }
 
 %Include types.sip
