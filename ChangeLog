@@ -1,3 +1,11 @@
+Version 0.16.3 -- November 9th, 2012
+
+* Enable build with Poppler 0.18 and 0.20 (new api not yet)
+  (contributed by Marek Kašík, thanks!)
+* A simple demo file, inspired by a demo by Csaba Szepesvari
+* Better building on Windows by lorenzph
+* Fix for compile with Python 3.2.2 thanks to Csaba Szepesvari
+
 Version 0.16.2 -- May 20th, 2011
 
 * Fix gcc-4.6 compile (issue #4)
