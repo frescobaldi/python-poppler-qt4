@@ -11,6 +11,8 @@
     POPPLER_V0_16_0
     POPPLER_V0_18_0
     POPPLER_V0_20_0
+    POPPLER_V0_22_0
+    POPPLER_V0_24_0
 }
 
 %Include types.sip
@@ -38,6 +40,13 @@ class Document {
 %End
 
 public:
+%If(POPPLER_V0_22_0 -)
+    enum FormType {
+        NoForm,
+        AcroForm,
+        XfaForm,
+    };
+%End
     enum PageMode {
         UseNone,
         UseOutlines,
@@ -64,6 +73,18 @@ public:
         TextAntialiasing = 0x00000002,
 %If(POPPLER_V0_12_1 -)
         TextHinting = 0x00000004,
+%End
+%If(POPPLER_V0_18_0 -)
+        TextSlightHinting = 0x00000008,
+%End
+%If(POPPLER_V0_22_0 -)
+        OverprintPreview = 0x00000010,
+%End
+%If(POPPLER_V0_24_0 -)
+        ThinLineSolid = 0x00000020,
+%End
+%If(POPPLER_V0_24_0 -)
+        ThinLineShape = 0x00000040,
 %End
     };
     typedef QFlags<Poppler::Document::RenderHint> RenderHints;
@@ -104,6 +125,9 @@ public:
 %End
     void getPdfVersion(int *major, int *minor) const;
     QList<Poppler::FontInfo> fonts() const /ReleaseGIL/;
+%If(POPPLER_V0_22_0 -)
+    FormType formType() const;
+%End
     Poppler::FontIterator* newFontIterator( int startPage = 0 ) const /Factory/;
     QByteArray fontData(const Poppler::FontInfo &font) const;
     QList<Poppler::EmbeddedFile*> embeddedFiles() const;
