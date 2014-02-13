@@ -26,6 +26,22 @@ public:
 private:
     FormField(const Poppler::FormField&);
     
+%ConvertToSubClassCode
+    switch (sipCpp->type()) {
+        case Poppler::FormField::FormButton:
+            sipType = sipType_Poppler_FormFieldButton;
+            break;
+        case Poppler::FormField::FormText:
+            sipType = sipType_Poppler_FormFieldText;
+            break;
+        case Poppler::FormField::FormChoice:
+            sipType = sipType_Poppler_FormFieldChoice;
+            break;
+        default:
+            sipType = sipType_Poppler_FormField;
+    }
+%End
+
 }; // class FormField
 
 
