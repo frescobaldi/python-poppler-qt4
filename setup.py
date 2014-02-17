@@ -9,7 +9,7 @@ project = dict(
         'completeness and for being actively maintained.',
     maintainer = 'Wilbert Berendsen',
     maintainer_email = 'wbsoft@xs4all.nl',
-    url = 'http://python-poppler-qt4.googlecode.com/',
+    url = 'https://github.com/wbsoft/python-poppler-qt4',
     license = 'LGPL',
     classifiers = [
         'Development Status :: 5 - Production/Stable',

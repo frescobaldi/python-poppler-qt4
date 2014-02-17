@@ -1,7 +1,7 @@
-Version 0.18.0 -- 
+Version 0.18.0 -- February 7th, 2014
 
-* Works with both Python 2 and Python 3 (tested 2.6, 2.7, 3.2.3)
-* added some new methods
+* Works with both Python 2 and Python 3 (tested: 2.6, 2.7, 3.2.3)
+* some API updates
 * fixed FormField issue
 * setup.py circumvents sipdistutils < 4.14.2 not working with python 3
 
