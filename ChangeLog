@@ -1,3 +1,10 @@
+Version 0.18.0 -- 
+
+* Works with both Python 2 and Python 3 (tested 2.6, 2.7, 3.2.3)
+* added some new methods
+* fixed FormField issue
+* setup.py circumvents sipdistutils < 4.14.2 not working with python 3
+
 Version 0.16.3 -- November 9th, 2012
 
 * Enable build with Poppler 0.18 and 0.20 (new api not yet)

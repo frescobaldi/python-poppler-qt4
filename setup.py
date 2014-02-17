@@ -2,7 +2,7 @@
 
 project = dict(
     name = 'python-poppler-qt4',
-    version = '0.16.3',
+    version = '0.18.0',
     description = 'A Python binding to Poppler-Qt4',
     long_description = \
         'A Python binding to Poppler-Qt4 that aims for ' \
@@ -12,16 +12,19 @@ project = dict(
     url = 'http://python-poppler-qt4.googlecode.com/',
     license = 'LGPL',
     classifiers = [
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
         'Operating System :: MacOS :: MacOS X',
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
         'Topic :: Multimedia :: Graphics :: Viewers',
     ],
-   cmdclass={}
+    cmdclass={}
 )
 
 import os
@@ -37,6 +40,18 @@ except ImportError:
    from distutils.core import setup, Extension
    
 import sipdistutils
+
+### this circumvents a bug in sip < 4.14.2, where the file() builtin is used
+### instead of open()
+try:
+    import builtins
+    try:
+        builtins.file
+    except AttributeError:
+        builtins.file = open
+except ImportError:
+    pass
+### end
 
 import PyQt4.pyqtconfig
 config = PyQt4.pyqtconfig.Configuration()
