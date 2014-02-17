@@ -83,7 +83,7 @@ def pkg_config(package, attrs=None, include_only=False):
         return attrs
     flag_map = {'-I': 'include_dirs', '-L': 'library_dirs', '-l': 'libraries'}
     # for python3 turn bytes back to string
-    if sys.version_info.major > 2:
+    if sys.version_info[0] > 2:
         output = output.decode('utf-8')
     for flag in shlex.split(output):
         option, path = flag[:2], flag[2:]
@@ -99,7 +99,7 @@ def pkg_config_version(package):
     try:
         output = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
         # for python3 turn bytes back to string
-        if sys.version_info.major > 2:
+        if sys.version_info[0] > 2:
             output = output.decode('utf-8')
         return tuple(map(int, re.findall(r'\d+', output)))
     except OSError:
