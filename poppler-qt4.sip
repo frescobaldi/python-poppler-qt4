@@ -82,8 +82,6 @@ public:
 %End
 %If(POPPLER_V0_24_0 -)
         ThinLineSolid = 0x00000020,
-%End
-%If(POPPLER_V0_24_0 -)
         ThinLineShape = 0x00000040,
 %End
     };
