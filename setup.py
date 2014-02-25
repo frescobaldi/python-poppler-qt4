@@ -4,9 +4,12 @@ project = dict(
     name = 'python-poppler-qt4',
     version = '0.18.1',
     description = 'A Python binding to Poppler-Qt4',
-    long_description = \
-        'A Python binding to Poppler-Qt4 that aims for ' \
-        'completeness and for being actively maintained.',
+    long_description = (
+        'A Python binding to Poppler-Qt4 that aims for '
+        'completeness and for being actively maintained. '
+        'Using this module you can access the contents of PDF files '
+        'inside PyQt4 applications.'
+    ),
     maintainer = 'Wilbert Berendsen',
     maintainer_email = 'wbsoft@xs4all.nl',
     url = 'https://github.com/wbsoft/python-poppler-qt4',
