@@ -56,14 +56,6 @@ except ImportError:
     pass
 ### end
 
-import PyQt4.pyqtconfig
-config = PyQt4.pyqtconfig.Configuration()
-
-pyqt_sip_dir = config.pyqt_sip_dir
-pyqt_sip_flags = config.pyqt_sip_flags
-qt_inc_dir = config.qt_inc_dir
-
-
 def pkg_config(package, attrs=None, include_only=False):
     """parse the output of pkg-config for a package.
     
@@ -107,17 +99,8 @@ def pkg_config_version(package):
         return tuple(map(int, re.findall(r'\d+', output)))
     except OSError:
         sys.stderr.write("Can't determine version of %s\n" % package)
-        
 
-ext_args = {
-    'include_dirs': [
-        qt_inc_dir,
-        os.path.join(qt_inc_dir, 'QtCore'),
-        os.path.join(qt_inc_dir, 'QtGui'),
-        os.path.join(qt_inc_dir, 'QtXml'),
-    ],
-}
-
+ext_args = {}
 pkg_config('poppler-qt4', ext_args)
 
 if 'libraries' not in ext_args:
@@ -131,16 +114,107 @@ class build_ext(build_ext_base):
     
     user_options = build_ext_base.user_options + [
         ('poppler-version=', None, "version of the poppler library"),
+        ('qmake-bin=', None, "Path to qmake binary"),
+        ('qt-include-dir=', None, "Path to Qt headers"),
+        ('pyqt-sip-dir=', None, "Path to PyQt's SIP files"),
+        ('pyqt-sip-flags=', None, "SIP flags used to generate PyQt bindings")
     ]
     
     def initialize_options (self):
         build_ext_base.initialize_options(self)
         self.poppler_version = None
 
+        self.qmake_bin = 'qmake'
+
+        self.qt_include_dir = None
+        self.pyqt_sip_dir = None
+        self.pyqt_sip_flags = None
+
     def finalize_options (self):
         build_ext_base.finalize_options(self)
+
+        if not self.qt_include_dir:
+            self.qt_include_dir = self.__find_qt_include_dir()
+
+        if not self.pyqt_sip_dir:
+            self.pyqt_sip_dir = self.__find_pyqt_sip_dir()
+
+        if not self.pyqt_sip_flags:
+            self.pyqt_sip_flags = self.__find_pyqt_sip_flags()
+
+        if not self.qt_include_dir:
+            raise SystemExit('Could not find Qt4 headers. '
+                             'Please specify via --qt-include-dir=')
+
+        if not self.pyqt_sip_dir:
+            raise SystemExit('Could not find PyQt SIP files. '
+                             'Please specify containing directory via '
+                             '--pyqt-sip-dir=')
+
+        if not self.pyqt_sip_flags:
+            raise SystemExit('Could not find PyQt SIP flags. '
+                             'Please specify via --pyqt-sip-flags=')
+
+        self.include_dirs += (self.qt_include_dir,
+                              os.path.join(self.qt_include_dir, 'QtCore'),
+                              os.path.join(self.qt_include_dir, 'QtGui'),
+                              os.path.join(self.qt_include_dir, 'QtXml'))
+
         if self.poppler_version is not None:
             self.poppler_version = tuple(map(int, re.findall(r'\d+', self.poppler_version)))
+
+    def __find_qt_include_dir(self):
+        if self.pyqtconfig:
+            return self.pyqtconfig.qt_inc_dir
+
+        try:
+            qt_version = subprocess.check_output([self.qmake_bin,
+                                                  '-query',
+                                                  'QT_VERSION'])
+            qt_version = qt_version.strip().decode("ascii")
+        except (OSError, subprocess.CalledProcessError) as e:
+            raise SystemExit('Failed to determine Qt version (%s).' % e)
+
+        if not qt_version.startswith("4."):
+            raise SystemExit('Unsupported Qt version (%s). '
+                             'Try specifying the path to qmake manually via '
+                             '--qmake-bin=' % qt_version)
+
+        try:
+            result =  subprocess.check_output([self.qmake_bin,
+                                               '-query',
+                                               'QT_INSTALL_HEADERS'])
+            return result.strip().decode(sys.getfilesystemencoding())
+        except (OSError, subprocess.CalledProcessError) as e:
+            raise SystemExit('Failed to determine location of Qt headers (%s).' % e)
+
+    def __find_pyqt_sip_dir(self):
+        if self.pyqtconfig:
+            return self.pyqtconfig.pyqt_sip_dir
+
+        import sipconfig
+
+        return os.path.join(sipconfig.Configuration().default_sip_dir, 'PyQt4')
+
+    def __find_pyqt_sip_flags(self):
+        if self.pyqtconfig:
+            return self.pyqtconfig.pyqt_sip_flags
+
+        from PyQt4 import QtCore
+
+        return QtCore.PYQT_CONFIGURATION.get('sip_flags', '')
+
+    @property
+    def pyqtconfig(self):
+        if not hasattr(self, '_pyqtconfig'):
+            try:
+                from PyQt4 import pyqtconfig
+
+                self._pyqtconfig = pyqtconfig.Configuration()
+            except ImportError:
+                self._pyqtconfig = None
+
+        return self._pyqtconfig
 
     def _sip_compile(self, sip_bin, source, sbf):
         
@@ -176,8 +250,8 @@ class build_ext(build_ext_base):
         cmd += [
             "-c", self.build_temp,
             "-b", sbf,
-            "-I", pyqt_sip_dir]             # find the PyQt4 stuff
-        cmd += shlex.split(pyqt_sip_flags)  # use same SIP flags as for PyQt4
+            "-I", self.pyqt_sip_dir]             # find the PyQt4 stuff
+        cmd += shlex.split(self.pyqt_sip_flags)  # use same SIP flags as for PyQt4
         cmd.append(source)
         self.spawn(cmd)
 
