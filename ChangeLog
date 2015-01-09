@@ -1,3 +1,9 @@
+Version 0.18.2 -- January 9th, 2015
+
+* Tested with Python 2.6, 2.7, 3.2, 3.3, 3.4
+* Support PyQt's new build system, contributed by Philipp Lorenz,
+  fixing issue #6
+
 Version 0.18.1 -- February 18th, 2014
 
 * Tested with Python 2.6, 2.7, 3.2, 3.3
