@@ -1,3 +1,13 @@
+Version 0.18.3 -- 
+
+* Added version() function, returning the version of python-poppler-qt4
+  as a tuple of ints e.g. (0, 18, 3)
+* Added poppler_version() function, returning the version of the Poppler-
+  Qt4 library (if the version could be determined on build time), as a
+  tuple of ints, e.g. (0, 24, 5). If on build time the version of
+  Poppler-Qt4 could not be determined and was not specified, an empty
+  tuple might be returned.
+
 Version 0.18.2 -- January 9th, 2015
 
 * Tested with Python 2.6, 2.7, 3.2, 3.3, 3.4
