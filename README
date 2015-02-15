@@ -47,3 +47,18 @@ you can also use the more Pythonic:
     for fonts in document.newFontIterator():
         ...
 
+In addition to the Poppler namespace, there are two toplevel module
+functions:
+
+    popplerqt4.version()
+        returns the version of the python-poppler-qt4 package as a
+        tuple of ints, e.g. (0, 18, 2).
+    
+    popplerqt4.poppler_version()
+        returns the version of the linked Poppler-Qt4 library as a
+        tuple of ints, e.g. (0, 24, 5).
+        
+        This is determined at build time. If at build time the Poppler-Qt4
+        version could not be determined and was not specified, an empty
+        tuple might be returned.
+
