@@ -363,6 +363,11 @@ PyObject *poppler_version()
 %End
 """
 
+### use full README.rst as long description
+with open('README.rst', 'rb') as f:
+    project["long_description"] = f.read().decode('utf-8')
+
+
    
 project['cmdclass']['build_ext'] = build_ext
 setup(
