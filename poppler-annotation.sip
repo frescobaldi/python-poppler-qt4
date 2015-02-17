@@ -331,51 +331,53 @@ public:
         StrikeOut,
     };
     struct Quad {
-        QPointF *    points;
-%GetCode
-    sipPy = PyList_New(4);
-    PyObject* obj;
-    for (SIP_SSIZE_T i = 0; i < 4; ++i)
-    {
-        QPointF *point = new QPointF(sipCpp->points[i]);
-        obj = sipConvertFromNewType(point, sipType_QPointF, NULL);
-        PyList_SET_ITEM(sipPy, i, obj);
-    }
-%End
-%SetCode
-    SIP_SSIZE_T len;
-    if (!PySequence_Check(sipPy) || (len = PySequence_Size(sipPy)) != 4)
-        sipErr = 1;
-    else
-    {
-        for (SIP_SSIZE_T i = 0; i < 4; ++i)
+        QPointF *    points
         {
-            PyObject *itm = PySequence_ITEM(sipPy, i);
-            bool ok = (itm && sipCanConvertToType(itm, sipType_QPointF, SIP_NOT_NONE));
-            Py_XDECREF(itm);
+            %GetCode
+                sipPy = PyList_New(4);
+                PyObject* obj;
+                for (SIP_SSIZE_T i = 0; i < 4; ++i)
+                {
+                    QPointF *point = new QPointF(sipCpp->points[i]);
+                    obj = sipConvertFromNewType(point, sipType_QPointF, NULL);
+                    PyList_SET_ITEM(sipPy, i, obj);
+                }
+            %End
+            %SetCode
+                SIP_SSIZE_T len;
+                if (!PySequence_Check(sipPy) || (len = PySequence_Size(sipPy)) != 4)
+                    sipErr = 1;
+                else
+                {
+                    for (SIP_SSIZE_T i = 0; i < 4; ++i)
+                    {
+                        PyObject *itm = PySequence_ITEM(sipPy, i);
+                        bool ok = (itm && sipCanConvertToType(itm, sipType_QPointF, SIP_NOT_NONE));
+                        Py_XDECREF(itm);
 
-            if (!ok)
-            {
-                sipErr = 1;
-                break;
-            }
-        }
-    }
-    
-    if (sipErr == 1)
-        PyErr_SetString(PyExc_ValueError, "Quad.points must be a sequence of exactly 4 QPointF() instances");
-    else
-    {
-        int iserr = 0;
-        for (SIP_SSIZE_T i = 0; i < 4; ++i)
-        {
-            PyObject *itm = PySequence_ITEM(sipPy, i);
-            QPointF *point = reinterpret_cast<QPointF *>(sipConvertToType(itm, sipType_QPointF, 0, 0, 0, &iserr));
-            sipCpp->points[i] = *point;
-            Py_DECREF(itm);
-        }
-    }
-%End
+                        if (!ok)
+                        {
+                            sipErr = 1;
+                            break;
+                        }
+                    }
+                }
+                
+                if (sipErr == 1)
+                    PyErr_SetString(PyExc_ValueError, "Quad.points must be a sequence of exactly 4 QPointF() instances");
+                else
+                {
+                    int iserr = 0;
+                    for (SIP_SSIZE_T i = 0; i < 4; ++i)
+                    {
+                        PyObject *itm = PySequence_ITEM(sipPy, i);
+                        QPointF *point = reinterpret_cast<QPointF *>(sipConvertToType(itm, sipType_QPointF, 0, 0, 0, &iserr));
+                        sipCpp->points[i] = *point;
+                        Py_DECREF(itm);
+                    }
+                }
+            %End
+        };
         bool            capStart;
         bool            capEnd;
         double          feather;
