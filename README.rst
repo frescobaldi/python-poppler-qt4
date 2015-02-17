@@ -1,3 +1,4 @@
+==================
 python-poppler-qt4
 ==================
 
@@ -15,8 +16,8 @@ Usage::
     d = popplerqt4.Poppler.Document.load('file.pdf')
 
 
-Documentation:
-==============
+Documentation
+-------------
 
 The Python API closely follows the Poppler Qt4 C++ interface library API,
 documented at http://people.freedesktop.org/~aacid/docs/qt4/ .
