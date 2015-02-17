@@ -1,3 +1,5 @@
-include README INSTALL LICENSE TODO ChangeLog MANIFEST.in
+include README.rst INSTALL LICENSE TODO ChangeLog
+include MANIFEST.in setup.cfg
 include *.py
 include *.sip
+exclude version.sip
