@@ -64,8 +64,20 @@ public:
                             const QByteArray &ownerPassword=QByteArray(),
                             const QByteArray &userPassword=QByteArray()) /Factory, ReleaseGIL/;
     Poppler::Page *page(int index) const /Factory/;
+    Poppler::Page *__getitem__(int index) const /Factory/;
+%MethodCode
+    SIP_SSIZE_T i = sipConvertFromSequenceIndex(a0, sipCpp->numPages());
+    if (i < 0)
+        sipIsErr = 1;
+    else
+        sipRes = sipCpp->page((int)i);
+%End
     Poppler::Page *page(const QString &label) const /Factory/;
-    int numPages() const;
+    int numPages() const /__len__/;
+    int __bool__() const;
+%MethodCode
+    sipRes = 1;
+%End
     PageMode pageMode() const;
     PageLayout pageLayout() const;
     bool unlock(const QByteArray &ownerPassword, const QByteArray &userPassword);

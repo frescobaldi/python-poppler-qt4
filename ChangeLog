@@ -1,4 +1,9 @@
-Version 0.18.3 -- 
+Version 0.24.1 -- 
+
+* Added __len__, __getitem__ and __bool__ methods to Poppler.Document.
+  The __bool__ method always returns True, even if a document has 0 pages.
+
+Version 0.24.0 -- February 18th, 2015
 
 * Added version() function, returning the version of python-poppler-qt4
   as a tuple of ints e.g. (0, 18, 3)
