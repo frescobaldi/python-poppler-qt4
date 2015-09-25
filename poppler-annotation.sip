@@ -45,6 +45,44 @@ public:
     void setFlags( int flags );
     QRectF boundary() const;
     void setBoundary( const QRectF &boundary );
+%If(POPPLER_V0_20_0 -)
+    class Style
+    {
+    public:
+        Style();
+        Style( const Poppler::Annotation::Style &other );
+        //Style& operator=( const Style &other );
+        ~Style();
+        
+        // appearance properties
+        QColor color() const;                     // black
+        void setColor(const QColor &color);
+        double opacity() const;                   // 1.0
+        void setOpacity(double opacity);
+
+        // pen properties
+        double width() const;                     // 1.0
+        void setWidth(double width);
+        Poppler::Annotation::LineStyle lineStyle() const;              // LineStyle::Solid
+        void setLineStyle(Poppler::Annotation::LineStyle style);
+        double xCorners() const;                  // 0.0
+        void setXCorners(double radius);
+        double yCorners() const;                  // 0.0
+        void setYCorners(double radius);
+        const QVector<double>& dashArray() const; // [ 3 ]
+        void setDashArray(const QVector<double> &array);
+
+        // pen effects
+        Poppler::Annotation::LineEffect lineEffect() const;            // LineEffect::NoEffect
+        void setLineEffect(Poppler::Annotation::LineEffect effect);
+        double effectIntensity() const;           // 1.0
+        void setEffectIntensity(double intens);
+
+    };
+
+    Poppler::Annotation::Style style() const;
+    void setStyle( const Poppler::Annotation::Style& style );
+%End
 %If(- POPPLER_V0_18_0)
     struct Style {
         // appearance properties
